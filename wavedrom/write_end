@@ -1,0 +1,22 @@
+{
+  
+signal: [
+  {name: 'CLK',               wave: 'p...|.....'},
+  {name: 'INFIFO_TREADY',     wave: '0...|.....'},
+  {name: 'OUTFIFO_TVALID',    wave: '0...|.....'},
+  {name: 'APP_EN',            wave: '0...|.....'},
+  {name: 'APP_WDF_WREN',      wave: '0...|.....'},
+  {name: 'WR_DELAY_COUNTER',  wave: 'x===|==x..', data: ['DEL_VAL', 'DEL_VAL-1','','1','0'], node:'......1'},
+  {name: 'FSM_STATE',         wave: '==..|..===', data: ['WRITE', 'DELAY_WR', 'CHECK_RD','CHECK_WD'], node:'.......2'}
+  
+],
+  
+edge: ['1~>2'],
+  
+head:{
+   text:'Окончание записи в память'
+ },
+  
+config: { hscale: 3 }  
+
+}

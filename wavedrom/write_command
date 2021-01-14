@@ -1,0 +1,18 @@
+{signal: [
+  {name: 'CLK',            		wave: 'p........|...'},
+  {name: 'IN_WR_COUNT',         wave: '=.x......|...', data: ['VAL!=0']},
+  {name: 'MEM_WR_COUNT',         wave: '=.x......|...', data: ['VAL!=0']},
+  {name: 'APP_ADDR',            wave: 'x.=.==.==|=x.', data: ['MEM_WR_ADDR', 'MEM_WR_ADDR', 'MEM_WR_ADDR', 'MEM_WR_ADDR', '', 'MEM_WR_ADDR'], node: '..2......'},
+  {name: 'APP_CMD',             wave: 'x.=......|.x.', data: ['0'], node: '..3.......'},
+  {name: 'APP_EN',              wave: 'x.01.....|.0.', node: '...6.....'},
+  {name: 'APP_RDY',             wave: 'x.1..01..|.x.'},
+  {name: 'MEM_WR_ADDR', 		wave: '=...==.==|==.', data: ['MEM_WADDR', 'MEM_WADDR+8', 'MEM_WADDR+16','MEM_WADDR+24', '', 'M.R+(WR..T-1)*8', 'MEM_WADDR+WR_CNT*8']},
+  {name: 'WR_COUNTER', 			wave: 'x.====.==|=x.', data: ['WR_CNT','WR_CNT-1','WR_CNT-2','WR_CNT-3','WR_CNT-4','','0'], node: '...4........'}, 
+  {name: 'WR_ADD_COUNTER', 		wave: 'x.=.==.==|=x.', data: ['WR_CNT','WR_CNT-1','WR_CNT-2','WR_CNT-3','','1','0'], node: '....5.....7..'}, 
+  {name: 'WR_DELAY_COUNTER',    wave: 'x........|.==', data: ['DAL_VAL','DAL_VAL-1']},
+  {name: 'FSM_STATE',           wave: 'x==......|.=.', data: ['CHECK_WR', 'WRITE', 'DELAY_WR'], node: '.1.........8.'}
+],
+edge: ['1~>2','1~>3', '4~>5', '4~>6', '7~>8', '7~>9', '7~>a'],
+config: { hscale: 3 },
+head:{text: 'Команды записи в память'},
+}

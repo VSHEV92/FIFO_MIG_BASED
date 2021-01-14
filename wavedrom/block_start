@@ -1,0 +1,25 @@
+{
+  
+signal: [
+  {name: 'CLK',            wave: 'p..|.....'},
+  {name: 'RESET',          wave: '10.|.....'} ,
+  {name: 'INIT_MEM',       wave: '0..|1....', node:'....1'},
+  {name: 'INFIFO_TREADY',  wave: 'x0.|....='},
+  {name: 'OUTFIFO_TVALID', wave: 'x0.|.....'},
+  {name: 'IN_WR_COUNT',    wave: 'x=.|..=..', data: ['0','1']},
+  {name: 'OUT_RD_COUNT',   wave: 'x=.|.....', data: ['0']},
+  {name: 'APP_EN',         wave: 'x0.|....='},
+  {name: 'APP_WDF_WREN',   wave: 'x0.|....='},
+  {name: 'FSM_STATE',      wave: 'x=.|.====', data: ['INIT', 'CHECK_WR','CHECK_RD', 'CHECK_WR','WRITE'], node:'.....2'}
+  
+],
+  
+edge: ['1~>2'],
+  
+head:{
+   text:'Старт работы блока'
+ },
+  
+config: { hscale: 3 }  
+
+}

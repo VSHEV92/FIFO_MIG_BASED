@@ -1,0 +1,19 @@
+{signal: [
+  {name: 'CLK',            		wave: 'p.......|....'},
+  {name: 'OUT_TDATA',          	wave: 'x..=x.==|x=x.', data: ['DATA1_HL', 'DATA2_HL', '', 'DATA_RD_CNTHL', '']},
+  {name: 'OUT_TVALID',         	wave: '0..10.10|.10.', node: '..........'},
+  {name: 'OUT_TREADY',         	wave: 'x.1.....|.x..', node: '.......'},
+  {name: 'OUT_RD_COUNT',        wave: '=.x.....|....', data: ['VAL!=MAX']},
+  {name: 'APP_RD_DATA',         wave: 'x.==x===|==x.', data: ['DATA1_H','DATA1_L', 'DATA2_H', 'DATA2_L', '', 'DATA_RD_CNTH', 'DATA_RD_CNTL', '']},
+  {name: 'APP_RD_DATA_VALID',   wave: '0.1.01..|..0.', node: '.....4'},
+  {name: 'APP_RD_DATA_END',     wave: 'x.010.10|.10.'},
+  {name: 'MEM_WR_COUNT', 		wave: '=...=..=|=.=.', data: ['MEM_WCNT', 'MEM_WCNT+1', '', 'MEM..RCNT-1', 'MEM_WCNT+RD_CNT'], node: '.....3...'},
+  {name: 'MEM_RD_COUNT', 		wave: '=...=..=|=.=.', data: ['MEM_RCNT!=0', 'MEM_RCNT-1', '', 'MEM..RCNT+1', 'MEM_RCNT-RD_CNT']},
+  {name: 'RD_COUNTER', 			wave: 'x.=.=..=|=.xx', data: ['RD_CNT','RD_CNT-1','','1','0'], node: '..2......5....'}, 
+  {name: 'RD_DELAY_COUNTER',    wave: 'x.......|..==', data: ['DEL_VAL','DEL_VAL-1']},
+  {name: 'FSM_STATE',           wave: 'x==.....|..=.', data: ['CHECK_RD', 'READ', 'DELAY_RD'], node: '.1.........6.'}
+],
+edge: ['1~>2','4~>3', '5~>6', '7~>8', '7~>a'],
+config: { hscale: 3 },
+head:{text: 'Начало чтения из памяти clk x2'},
+}
