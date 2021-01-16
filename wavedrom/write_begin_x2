@@ -1,5 +1,5 @@
 {signal: [
-  {name: 'CLK',            		wave: 'p.......|....'},
+  {name: 'ACLK',            	wave: 'p.......|....'},
   {name: 'IN_TDATA',          	wave: '=...=..=|=.=.', data: ['DATA1', 'DATA2', '', 'DATA_WR_CNT', '']},
   {name: 'IN_TVALID',         	wave: '1.......|....'},
   {name: 'IN_TREADY',         	wave: '0..10.10|.10.', node: '.....2....c'},
@@ -11,7 +11,6 @@
   {name: 'MEM_WR_COUNT', 		wave: '=...=..=|=.=.', data: ['MEM_WCNT!=0', 'MEM_WCNT-1', '', 'MEM_WCNT-WR_CNT+1', 'MEM_WCNT-WR_CNT']},
   {name: 'MEM_RD_COUNT', 		wave: '=...=..=|=.=.', data: ['MEM_RCNT', 'MEM_RCNT+1', '', 'MEM_RCNT+WR_CNT-1', 'MEM_RCNT+WR_CNT']},
   {name: 'WR_COUNTER', 			wave: 'x.=.=..=|=.=.', data: ['WR_CNT','WR_CNT-1','','1','0'], node: '............'}, 
-  {name: 'WR_DELAY_COUNTER',    wave: 'x.......|..=.', data: ['']},
   {name: 'FSM_STATE',           wave: 'x==.....|..=.', data: ['CHECK_WR', 'WRITE', ''], node: '.7.........5.'}
 ],
 edge: ['1~>2', 'c~>b',  '7~>9'],

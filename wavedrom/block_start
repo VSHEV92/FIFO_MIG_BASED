@@ -1,9 +1,9 @@
 {
   
 signal: [
-  {name: 'CLK',            wave: 'p..|.....'},
-  {name: 'RESET',          wave: '10.|.....'} ,
-  {name: 'INIT_MEM',       wave: '0..|1....', node:'....1'},
+  {name: 'ACLK',           wave: 'p..|.....'},
+  {name: 'ARESETN',        wave: '01.|.....'} ,
+  {name: 'INIT_CALIB',     wave: '0..|1....', node:'....1'},
   {name: 'INFIFO_TREADY',  wave: 'x0.|....='},
   {name: 'OUTFIFO_TVALID', wave: 'x0.|.....'},
   {name: 'IN_WR_COUNT',    wave: 'x=.|..=..', data: ['0','1']},

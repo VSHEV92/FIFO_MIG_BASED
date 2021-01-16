@@ -1,7 +1,7 @@
 {signal: [
-  {name: 'CLK',            		wave: 'p........|...'},
+  {name: 'ACLK',            	wave: 'p........|...'},
   {name: 'IN_WR_COUNT',         wave: '=.x......|...', data: ['VAL!=0']},
-  {name: 'MEM_WR_COUNT',         wave: '=.x......|...', data: ['VAL!=0']},
+  {name: 'MEM_WR_COUNT',        wave: '=.x......|...', data: ['VAL!=0']},
   {name: 'APP_ADDR',            wave: 'x.=.==.==|=x.', data: ['MEM_WR_ADDR', 'MEM_WR_ADDR', 'MEM_WR_ADDR', 'MEM_WR_ADDR', '', 'MEM_WR_ADDR'], node: '..2......'},
   {name: 'APP_CMD',             wave: 'x.=......|.x.', data: ['0'], node: '..3.......'},
   {name: 'APP_EN',              wave: 'x.01.....|.0.', node: '...6.....'},
