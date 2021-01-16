@@ -1,7 +1,7 @@
 {
   
 signal: [
-  {name: 'CLK',               wave: 'p...|.....'},
+  {name: 'ACLK',              wave: 'p...|.....'},
   {name: 'INFIFO_TREADY',     wave: '0...|.....'},
   {name: 'OUTFIFO_TVALID',    wave: '0...|.....'},
   {name: 'APP_EN',            wave: '0...|.....'},

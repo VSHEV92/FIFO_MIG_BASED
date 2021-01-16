@@ -1,5 +1,5 @@
 {signal: [
-  {name: 'CLK',            		wave: 'p.......|....'},
+  {name: 'ACLK',            	wave: 'p.......|....'},
   {name: 'OUT_TDATA',          	wave: 'x..=x.==|x=x.', data: ['DATA1_HL', 'DATA2_HL', '', 'DATA_RD_CNTHL', '']},
   {name: 'OUT_TVALID',         	wave: '0..10.10|.10.', node: '..........'},
   {name: 'OUT_TREADY',         	wave: 'x.1.....|.x..', node: '.......'},

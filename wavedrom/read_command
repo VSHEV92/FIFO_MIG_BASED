@@ -1,5 +1,5 @@
 {signal: [
-  {name: 'CLK',            		wave: 'p.......|...'},
+  {name: 'ACLK',            	wave: 'p.......|...'},
   {name: 'OUT_RD_COUNT',        wave: '=.x.....|...', data: ['VAL!=MAX']},
   {name: 'MEM_RD_COUNT',        wave: '=.x.....|...', data: ['VAL!=0']},
   {name: 'APP_ADDR',            wave: 'x.===.==|=x.', data: ['MEM_RD_ADDR', 'MEM_RD_ADDR', 'MEM_RD_ADDR', 'MEM_RD_ADDR', '', 'MEM_RD_ADDR'], node: '..2......'},
@@ -8,7 +8,7 @@
   {name: 'APP_RDY',             wave: 'x.1..01.|.x.', node: '......6.....'},
   {name: 'MEM_RD_ADDR', 		wave: '=..===.=|==.', data: ['MEM_RADDR', 'MEM_RADDR+8', 'MEM_RADDR+16','MEM_RADDR+24', '', 'M.R+(RD..T-1)*8', 'MEM_RADDR+RD_CNT*8']},
   {name: 'RD_ADD_COUNTER', 		wave: 'x.====.=|=x.',  data: ['RD_CNT','RD_CNT-1','RD_CNT-2','RD_CNT-3','','1','0'], node: '......4..5...'}, 
-  {name: 'RD_DELAY_COUNTER',    wave: 'x.......|.=.', data: ['']},
+ 
   {name: 'FSM_STATE',           wave: 'x==.....|.=.', data: ['CHECK_RD', 'READ', ''], node: '.1..........'}
 ],edge: ['1~>2','1~>3', '6~>4', '5~>8'],
 config: { hscale: 3 },
