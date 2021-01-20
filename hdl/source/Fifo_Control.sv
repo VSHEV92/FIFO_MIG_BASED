@@ -5,8 +5,8 @@ module Fifo_Control
     parameter RW_Delay_Value = 4,
     parameter Base_Address = 0,
     parameter Memory_Size = 100,
-    parameter MIG_Data_Port_Size = 16,
-    parameter MIG_Addr_Port_Size = 16,
+    parameter MIG_Data_Port_Size = 128,
+    parameter MIG_Addr_Port_Size = 28,
     parameter IO_Fifo_Depth = 32
 )
 (

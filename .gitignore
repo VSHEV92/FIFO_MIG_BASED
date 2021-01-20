@@ -10,6 +10,9 @@
 !docs
 !docs/*
 
+!ips
+!ips/*.xcix
+
 !hdl
 !hdl/header
 !hdl/header/*
