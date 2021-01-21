@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-`include "../header/Interfaces.svh"
+`include "../header/Environment.svh"
 `include "../header/testbench_settings.svh"
 //`include "../header/test_set.svh"
 
@@ -30,12 +30,13 @@ logic [2:0] app_cmd;
 logic app_en, app_rdy;
 
 logic [127:0] app_wdf_data, app_rd_data;
+logic [15:0] app_wdf_mask;
 logic app_wdf_wren, app_wdf_end, app_wdf_rdy;
 logic app_rd_data_valid, app_rd_data_end;
 
-logic [127:0] ififo_tdata, ofifo_tdata;
-logic ififo_tvalid, ififo_tready, ofifo_tvalid, ofifo_tready;
-
+AXIS_intf #(128) axis_in (aclk, aresetn);
+AXIS_intf #(128) axis_out (aclk, aresetn);
+    
 // --------------------------------------------------------------------------------------------
 // тактовый сигнал
  initial forever
@@ -44,6 +45,18 @@ logic ififo_tvalid, ififo_tready, ofifo_tvalid, ofifo_tready;
 // сигнал сброса
 initial 
 	#RESET_DEASSERT_DELAY sys_rst = 0;
+
+// тестовое окружение
+initial begin
+    Environment #(128) env;
+    env = new;
+    env.axis_in = axis_in;
+    axis_in.tvalid = 0;
+    axis_in.tdata = 0;
+    axis_out.tready = 1;
+    wait(init_calib);
+    env.run(200);
+end
 
 // --------------------------------------------------------------------------------------------
 // проверяемый блок
@@ -64,13 +77,13 @@ DUT
     .aresetn(aresetn),
     .init_calib(init_calib),
     // входной AXIS интерфейс
-    .in_tdata(ififo_tdata),
-    .in_tvalid(ififo_tvalid),
-    .in_tready(ififo_tready),
+    .in_tdata(axis_in.tdata),
+    .in_tvalid(axis_in.tvalid),
+    .in_tready(axis_in.tready),
     // выходной AXIS интерфейс
-    .out_tdata(ofifo_tdata),
-    .out_tvalid(ofifo_tvalid),
-    .out_tready(ofifo_tready),
+    .out_tdata(axis_out.tdata),
+    .out_tvalid(axis_out.tvalid),
+    .out_tready(axis_out.tready),
     // Native Interface MIG
     .app_addr(app_addr),
     .app_cmd(app_cmd),
@@ -78,6 +91,7 @@ DUT
     .app_rdy(app_rdy),
     .app_wdf_data(app_wdf_data),
     .app_wdf_wren(app_wdf_wren),
+    .app_wdf_mask(app_wdf_mask),  
     .app_wdf_end(app_wdf_end),
     .app_wdf_rdy(app_wdf_rdy),
     .app_rd_data(app_rd_data),

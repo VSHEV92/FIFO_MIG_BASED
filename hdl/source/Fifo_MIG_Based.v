@@ -28,6 +28,7 @@ module Fifo_MIG_Based
     input  app_rdy,
     output [MIG_Data_Port_Size-1:0] app_wdf_data,
     output app_wdf_wren,
+    output [MIG_Data_Port_Size/8-1:0] app_wdf_mask,
     output app_wdf_end,
     input  app_wdf_rdy,
     input  [MIG_Data_Port_Size-1:0] app_rd_data,
@@ -87,6 +88,8 @@ Fifo_Control_Inst
     .app_rd_data_end(app_rd_data_end)
 );
 
+assign app_wdf_mask = 'b0;
+
 // выходные и выходные Fifo
 fifo_32x128 ififo (
   .s_axis_aresetn(aresetn),  
@@ -97,7 +100,7 @@ fifo_32x128 ififo (
   .m_axis_tvalid(ififo_tvalid),   
   .m_axis_tready(ififo_tready),   
   .m_axis_tdata(ififo_tdata),
-  .axis_wr_data_count(in_wr_count)      
+  .axis_rd_data_count(in_wr_count)      
 );
 
 fifo_32x128 ofifo (
@@ -109,7 +112,7 @@ fifo_32x128 ofifo (
   .m_axis_tvalid(out_tvalid),   
   .m_axis_tready(out_tready),   
   .m_axis_tdata(out_tdata),
-  .axis_wr_data_count(out_rd_count)      
+  .axis_rd_data_count(out_rd_count)      
 );
 
 endmodule

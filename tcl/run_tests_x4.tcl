@@ -46,7 +46,7 @@ create_project $Project_Name ./$Project_Name -part xc7a50tftg256-1
 #file copy -force $Test_Set_Name ./hdl/header/test_set.svh
 
 # добавляем заголовочные файлы к проекту
-add_files ./hdl/header/Interfaces.svh
+add_files ./hdl/header/Environment.svh
 add_files ./hdl/header/testbench_settings.svh
 add_files ./hdl/header/ddr3_model_parameters.vh
 

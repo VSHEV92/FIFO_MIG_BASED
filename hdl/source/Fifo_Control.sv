@@ -97,7 +97,7 @@ endgenerate
 // app cmd интерфейс
 assign app_addr = (State == WRITE) ? Mem_Wr_Addr : Mem_Rd_Addr;
 assign app_cmd = (State == WRITE) ? 0 : 1;
-assign app_en = ((State == WRITE) & (Wr_Counter > Wr_Addr_Counter)) | ((State == READ) & (Rd_Addr_Counter > 0));
+assign app_en = ((State == WRITE) & (Wr_Counter < Wr_Addr_Counter)) | ((State == READ) & (Rd_Addr_Counter > 0));
 
 // ---------------------------------------------------------------------------------
 // app write интерфейс
@@ -183,7 +183,7 @@ always_ff @(posedge aclk)
 always_ff @(posedge aclk)
     if(!aresetn)
         Mem_Wr_Addr <= Base_Address;
-    else if (app_en && app_rdy) begin
+    else if ((State == WRITE) && app_en && app_rdy) begin
         Mem_Wr_Addr <= Mem_Wr_Addr + 8;
         if (Mem_Wr_Addr == Max_Address)
             Mem_Wr_Addr <= Base_Address;
@@ -194,7 +194,7 @@ always_ff @(posedge aclk)
 always_ff @(posedge aclk)
     if(!aresetn)
         Mem_Rd_Addr <= Base_Address;
-    else if ((State == READ) && app_rdy) begin
+    else if ((State == READ) && app_rdy && app_en) begin
         Mem_Rd_Addr <= Mem_Rd_Addr + 8;
         if (Mem_Rd_Addr == Max_Address)
             Mem_Rd_Addr <= Base_Address;
