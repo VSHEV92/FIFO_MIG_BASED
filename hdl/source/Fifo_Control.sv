@@ -136,7 +136,7 @@ always_ff @(posedge aclk) begin : fsm_block
         CHECK_RD :  // проверка возможности чтения 
             State <= (Mem_Rd_Counter && out_Rd_space) ? READ : CHECK_WR;
         WRITE:      // запись в память
-            State <= ((Wr_Addr_Counter == 1) && app_rdy) ? DELAY_WR : WRITE;
+            State <= ((Wr_Addr_Counter == 1) && (Wr_Counter == 0) && app_rdy) ? DELAY_WR : WRITE;
         READ:       // чтение в память
             State <= ((Rd_Counter == 1) && app_rd_data_valid && app_rd_data_end) ? DELAY_RD : READ;
         DELAY_WR :  // задержка после записи

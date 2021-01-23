@@ -1,19 +1,12 @@
 `timescale 1ns / 1ps
 
 `include "../header/Environment.svh"
-`include "../header/testbench_settings.svh"
-//`include "../header/test_set.svh"
+`include "../header/testbench_settings_x4.svh"
+`include "../header/test_set.svh"
 
 module Fifo_MIG_Based_tb();
 
-	parameter PHY_to_UI_Rate = 1; // 1 - X4, 2 - X2
-    parameter Max_Burst_Len = 16;
-    parameter RW_Delay_Value = 4;
-    parameter Base_Address = 0;
-    parameter Memory_Size = 100;
-    parameter MIG_Data_Port_Size = 128;
-    parameter MIG_Addr_Port_Size = 28;
-    parameter IO_Fifo_Depth = 32;
+localparam int TDATA_WIDTH = MIG_Data_Port_Size*PHY_to_UI_Rate;
 
 logic   rst_n, ck, ck_n, cke, ras_n, cas_n, we_n, odt;
 tri     [1:0]  dm_tdqs, dqs, dqs_n;
@@ -29,13 +22,15 @@ logic [27:0] app_addr;
 logic [2:0] app_cmd;
 logic app_en, app_rdy;
 
-logic [127:0] app_wdf_data, app_rd_data;
+logic [TDATA_WIDTH-1:0] app_wdf_data, app_rd_data;
 logic [15:0] app_wdf_mask;
 logic app_wdf_wren, app_wdf_end, app_wdf_rdy;
 logic app_rd_data_valid, app_rd_data_end;
 
-AXIS_intf #(128) axis_in (aclk, aresetn);
-AXIS_intf #(128) axis_out (aclk, aresetn);
+AXIS_intf #(TDATA_WIDTH) axis_in (aclk, aresetn);
+AXIS_intf #(TDATA_WIDTH) axis_out (aclk, aresetn);
+
+Environment #(TDATA_WIDTH) env;
     
 // --------------------------------------------------------------------------------------------
 // тактовый сигнал
@@ -48,15 +43,39 @@ initial
 
 // тестовое окружение
 initial begin
-    Environment #(128) env;
-    env = new;
+    env = new(GEN_MAX_DELAY_NS, MON_MAX_DELAY_NS, TRANSACTIONS_NUMB);
     env.axis_in = axis_in;
-    axis_in.tvalid = 0;
-    axis_in.tdata = 0;
-    axis_out.tready = 1;
+    env.axis_out = axis_out;
     wait(init_calib);
-    env.run(200);
+    env.run();
 end
+
+// завершение проекта по тайм-ауту
+initial begin 
+    #SIM_TIMEOUT_NS;
+    $display("time = %t: Simulation timeout!", $time);
+    $finish;
+end    
+
+// вывод результатов теста
+final begin
+    automatic int f_result; 
+    automatic string file_path = find_file_path(`__FILE__);
+    f_result = $fopen({file_path, "../../log_fifo_mig_based_tests/Test_Results_x4.txt"}, "a");
+
+    $display("-------------------------------------");
+    if (env.test_pass) begin
+        $display("------------- TEST PASS -------------");
+        $fdisplay(f_result, "TEST PASS");
+    end else begin
+        $display("------------- TEST FAIL -------------");
+        $fdisplay(f_result, "TEST FAIL");
+    end
+    $display("-------------------------------------");
+
+    $fclose(f_result);    
+end 
+
 
 // --------------------------------------------------------------------------------------------
 // проверяемый блок

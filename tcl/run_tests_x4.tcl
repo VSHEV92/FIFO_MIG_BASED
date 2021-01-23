@@ -3,27 +3,27 @@
 # ------------------------------------------------------
 
 # -----------------------------------------------------------
-# proc launch_test_set {Test_Number Log_Dir_Name} {
-# 	# выбераем первый тестовый набор в качествре начального   
-# 	set Test_Set_Name ./hdl/header/test_sets/test_set
-# 	append Test_Set_Name _$Test_Number
-# 	append Test_Set_Name .svh
-# 	file copy -force $Test_Set_Name ./hdl/header/test_set.svh
+proc launch_test_set {Test_Number Log_Dir_Name} {
+	# выбераем первый тестовый набор в качествре начального   
+	set Test_Set_Name ./hdl/header/test_sets/test_set
+	append Test_Set_Name _$Test_Number
+	append Test_Set_Name .svh
+	file copy -force $Test_Set_Name ./hdl/header/test_set.svh
 
-# 	# пишим номер теста в log файлы
-# 	set fileID [open $Log_Dir_Name/Test_Results.txt a]
-# 	puts -nonewline $fileID "TEST SET $Test_Number: "
-# 	close $fileID
+	# пишим номер теста в log файлы
+	set fileID [open $Log_Dir_Name/Test_Results.txt a]
+	puts -nonewline $fileID "TEST SET $Test_Number: "
+	close $fileID
    
-# 	set fileID [open $Log_Dir_Name/Test_Logs.txt a]
-# 	puts $fileID ""
-# 	puts $fileID "TEST SET $Test_Number: "
-# 	close $fileID
+	set fileID [open $Log_Dir_Name/Test_Logs.txt a]
+	puts $fileID ""
+	puts $fileID "TEST SET $Test_Number: "
+	close $fileID
 	
-# 	# запускаем моделирование
-# 	launch_simulation
-# 	close_sim -quiet 
-# }
+	# запускаем моделирование
+	launch_simulation
+	close_sim -quiet 
+}
 # -----------------------------------------------------------
 
 set Project_Name fifo_mig_based_tests
@@ -42,15 +42,15 @@ create_project $Project_Name ./$Project_Name -part xc7a50tftg256-1
 
 # ----------------------------------------------------------------
 # выбераем первый тестовый набор в качествре начального   
-#set Test_Set_Name ./hdl/header/test_sets/test_set_1.svh
-#file copy -force $Test_Set_Name ./hdl/header/test_set.svh
+set Test_Set_Name ./hdl/header/test_sets/test_set_x4_1.svh
+file copy -force $Test_Set_Name ./hdl/header/test_set.svh
 
 # добавляем заголовочные файлы к проекту
 add_files ./hdl/header/Environment.svh
-add_files ./hdl/header/testbench_settings.svh
+add_files ./hdl/header/testbench_settings_x4.svh
 add_files ./hdl/header/ddr3_model_parameters.vh
 
-#add_files ./hdl/header/test_set.svh
+add_files ./hdl/header/test_set.svh
 
 # добавляем исходники к проекту
 add_files ./hdl/source/Fifo_Control.sv
@@ -81,12 +81,12 @@ update_compile_order -fileset sim_1
 set_property -name {xsim.simulate.runtime} -value {100s} -objects [get_filesets sim_1]
 
 # создаем log файл для результатов тестирования
-#set Log_Dir_Name log_$Project_Name
-#file mkdir $Log_Dir_Name
-#set fileID [open $Log_Dir_Name/Test_Results.txt w]
-#close $fileID
-#set fileID [open $Log_Dir_Name/Test_Logs.txt w]
-#close $fileID
+set Log_Dir_Name log_$Project_Name
+file mkdir $Log_Dir_Name
+set fileID [open $Log_Dir_Name/Test_Results_x4.txt w]
+close $fileID
+set fileID [open $Log_Dir_Name/Test_Logs_x4.txt w]
+close $fileID
 
 # запускаем тестовые наборы
 #for {set i 1} {$i <= $Number_of_Test_Sets} {incr i} {
