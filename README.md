@@ -32,7 +32,7 @@ IP-ядро, реализующее Fifo на основе DDR памяти и M
   vivado -mode batch –source tcl/run_tests_x4.tcl -notrace
   ```
 
-- Тесты для проверки режима x4: 
+- Тесты для проверки режима x2: 
 
   ```
   vivado -mode batch –source tcl/run_tests_x2.tcl -notrace

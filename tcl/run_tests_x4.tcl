@@ -27,7 +27,7 @@ proc launch_test_set {Test_Number Log_Dir_Name} {
 # -----------------------------------------------------------
 
 set Project_Name fifo_mig_based_tests
-set Number_of_Test_Sets 1
+set Number_of_Test_Sets 7
 
 # если проект с таким именем существует удаляем его
 close_sim -quiet 
