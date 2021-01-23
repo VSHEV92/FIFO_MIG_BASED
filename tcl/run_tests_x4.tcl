@@ -5,17 +5,17 @@
 # -----------------------------------------------------------
 proc launch_test_set {Test_Number Log_Dir_Name} {
 	# выбераем первый тестовый набор в качествре начального   
-	set Test_Set_Name ./hdl/header/test_sets/test_set
+	set Test_Set_Name ./hdl/header/test_sets/test_set_x4
 	append Test_Set_Name _$Test_Number
 	append Test_Set_Name .svh
 	file copy -force $Test_Set_Name ./hdl/header/test_set.svh
 
 	# пишим номер теста в log файлы
-	set fileID [open $Log_Dir_Name/Test_Results.txt a]
+	set fileID [open $Log_Dir_Name/Test_Results_x4.txt a]
 	puts -nonewline $fileID "TEST SET $Test_Number: "
 	close $fileID
    
-	set fileID [open $Log_Dir_Name/Test_Logs.txt a]
+	set fileID [open $Log_Dir_Name/Test_Logs_x4.txt a]
 	puts $fileID ""
 	puts $fileID "TEST SET $Test_Number: "
 	close $fileID
@@ -27,7 +27,7 @@ proc launch_test_set {Test_Number Log_Dir_Name} {
 # -----------------------------------------------------------
 
 set Project_Name fifo_mig_based_tests
-set Number_of_Test_Sets 6
+set Number_of_Test_Sets 1
 
 # если проект с таким именем существует удаляем его
 close_sim -quiet 
@@ -57,7 +57,8 @@ add_files ./hdl/source/Fifo_Control.sv
 add_files ./hdl/source/Fifo_MIG_Based.v
 
 # добавляем ip fifo к проекту
-add_files ./ips/fifo_32x128.xcix
+set pattern ./ips/*.xcix
+add_files [glob -nocomplain -- $pattern]
 
 # добавляем тестбенч к проекту
 set_property SOURCE_SET sources_1 [get_filesets sim_1]
@@ -89,10 +90,10 @@ set fileID [open $Log_Dir_Name/Test_Logs_x4.txt w]
 close $fileID
 
 # запускаем тестовые наборы
-#for {set i 1} {$i <= $Number_of_Test_Sets} {incr i} {
-#    launch_test_set $i $Log_Dir_Name
-#}
+for {set i 1} {$i <= $Number_of_Test_Sets} {incr i} {
+   launch_test_set $i $Log_Dir_Name
+}
 
 # закрываем проект после завершения
-#close_project -quiet
+close_project -quiet
 

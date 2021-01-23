@@ -110,6 +110,7 @@ class Generator
     task run(input int trans_numb);
         repeat (trans_numb) 
             send_data_to_mb();
+        $display("Generator Done.");    
     endtask
 
 endclass    
@@ -132,8 +133,9 @@ class Driver
     endfunction
 
     // принимает данные из mailbox и передает их по axis  
-    task run();
+    task run(int trans_numb);
         bit have_data = 0;
+        int count;
         forever begin
             wait (axis.aresetn);
 
@@ -143,15 +145,19 @@ class Driver
                     trans.print("Driver");
                     axis.tvalid <= 1'b1;
                     axis.tdata <= trans.get_data();
+                    count = trans.count;
                 end else
                     axis.tvalid <= 1'b0;
 
                 if(axis.tready && axis.tvalid) begin  
-                    -> dr_done;   
+                    -> dr_done;
+                    if (count == trans_numb) // завершение работы драйвера
+                        break;   
                 end
             end       
-            
-        end        
+        end
+        axis.tvalid <= 1'b0;
+        $display("Driver Done.");        
     endtask
 
 endclass
@@ -177,7 +183,7 @@ class Monitor
     endfunction
 
     // принимает данные из mailbox и передает их по axis  
-    task run();
+    task run(int trans_numb);
         forever begin
             wait (axis.aresetn);
             @(posedge axis.aclk)
@@ -191,9 +197,13 @@ class Monitor
                 trans.print("Monitor");
                 delay = $urandom_range(0, mon_max_delay_ns);
                 # delay; // случайная задержка
-                mb_monitor.put(trans);   
+                mb_monitor.put(trans);
+                if (trans.count == trans_numb) // завершение работы драйвера
+                    break;   
             end           
-        end        
+        end
+        axis.tready <= 1'b0;
+        $display("Monitor Done.");
     endtask
 
 endclass
@@ -245,7 +255,8 @@ class Scoreboard
                 $fclose(f_logs);
                 test_pass = 0;
             end
-        end        
+        end
+        $display("Scoreboard Done.");        
     endtask
 
 endclass
@@ -309,8 +320,8 @@ class Environment
 
         fork
             gen.run(transaction_numb);
-            dr.run();
-            mon.run();
+            dr.run(transaction_numb);
+            mon.run(transaction_numb);
         join
 
         score.run(transaction_numb); 

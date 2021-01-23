@@ -90,7 +90,37 @@ Fifo_Control_Inst
 
 assign app_wdf_mask = 'b0;
 
+// ---------------------------------------------------
 // выходные и выходные Fifo
+generate
+
+if (IO_Fifo_Depth == 32 && (MIG_Data_Port_Size*PHY_to_UI_Rate) == 64) begin
+fifo_32x64 ififo (
+  .s_axis_aresetn(aresetn),  
+  .s_axis_aclk(aclk),        
+  .s_axis_tvalid(in_tvalid),   
+  .s_axis_tready(in_tready),   
+  .s_axis_tdata(in_tdata),      
+  .m_axis_tvalid(ififo_tvalid),   
+  .m_axis_tready(ififo_tready),   
+  .m_axis_tdata(ififo_tdata),
+  .axis_rd_data_count(in_wr_count)      
+);
+
+fifo_32x64 ofifo (
+  .s_axis_aresetn(aresetn),  
+  .s_axis_aclk(aclk),        
+  .s_axis_tvalid(ofifo_tvalid),   
+  .s_axis_tready(ofifo_tready),   
+  .s_axis_tdata(ofifo_tdata),      
+  .m_axis_tvalid(out_tvalid),   
+  .m_axis_tready(out_tready),   
+  .m_axis_tdata(out_tdata),
+  .axis_rd_data_count(out_rd_count)      
+);
+end
+
+if (IO_Fifo_Depth == 32 && (MIG_Data_Port_Size*PHY_to_UI_Rate) == 128) begin
 fifo_32x128 ififo (
   .s_axis_aresetn(aresetn),  
   .s_axis_aclk(aclk),        
@@ -114,5 +144,269 @@ fifo_32x128 ofifo (
   .m_axis_tdata(out_tdata),
   .axis_rd_data_count(out_rd_count)      
 );
+end
+
+if (IO_Fifo_Depth == 32 && (MIG_Data_Port_Size*PHY_to_UI_Rate) == 256) begin
+fifo_32x256 ififo (
+  .s_axis_aresetn(aresetn),  
+  .s_axis_aclk(aclk),        
+  .s_axis_tvalid(in_tvalid),   
+  .s_axis_tready(in_tready),   
+  .s_axis_tdata(in_tdata),      
+  .m_axis_tvalid(ififo_tvalid),   
+  .m_axis_tready(ififo_tready),   
+  .m_axis_tdata(ififo_tdata),
+  .axis_rd_data_count(in_wr_count)      
+);
+
+fifo_32x256 ofifo (
+  .s_axis_aresetn(aresetn),  
+  .s_axis_aclk(aclk),        
+  .s_axis_tvalid(ofifo_tvalid),   
+  .s_axis_tready(ofifo_tready),   
+  .s_axis_tdata(ofifo_tdata),      
+  .m_axis_tvalid(out_tvalid),   
+  .m_axis_tready(out_tready),   
+  .m_axis_tdata(out_tdata),
+  .axis_rd_data_count(out_rd_count)      
+);
+end
+
+if (IO_Fifo_Depth == 32 && (MIG_Data_Port_Size*PHY_to_UI_Rate) == 512) begin
+fifo_32x512 ififo (
+  .s_axis_aresetn(aresetn),  
+  .s_axis_aclk(aclk),        
+  .s_axis_tvalid(in_tvalid),   
+  .s_axis_tready(in_tready),   
+  .s_axis_tdata(in_tdata),      
+  .m_axis_tvalid(ififo_tvalid),   
+  .m_axis_tready(ififo_tready),   
+  .m_axis_tdata(ififo_tdata),
+  .axis_rd_data_count(in_wr_count)      
+);
+
+fifo_32x512 ofifo (
+  .s_axis_aresetn(aresetn),  
+  .s_axis_aclk(aclk),        
+  .s_axis_tvalid(ofifo_tvalid),   
+  .s_axis_tready(ofifo_tready),   
+  .s_axis_tdata(ofifo_tdata),      
+  .m_axis_tvalid(out_tvalid),   
+  .m_axis_tready(out_tready),   
+  .m_axis_tdata(out_tdata),
+  .axis_rd_data_count(out_rd_count)      
+);
+end
+
+// -------------------------------------------------------------------
+if (IO_Fifo_Depth == 64 && (MIG_Data_Port_Size*PHY_to_UI_Rate) == 64) begin
+fifo_64x64 ififo (
+  .s_axis_aresetn(aresetn),  
+  .s_axis_aclk(aclk),        
+  .s_axis_tvalid(in_tvalid),   
+  .s_axis_tready(in_tready),   
+  .s_axis_tdata(in_tdata),      
+  .m_axis_tvalid(ififo_tvalid),   
+  .m_axis_tready(ififo_tready),   
+  .m_axis_tdata(ififo_tdata),
+  .axis_rd_data_count(in_wr_count)      
+);
+
+fifo_64x64 ofifo (
+  .s_axis_aresetn(aresetn),  
+  .s_axis_aclk(aclk),        
+  .s_axis_tvalid(ofifo_tvalid),   
+  .s_axis_tready(ofifo_tready),   
+  .s_axis_tdata(ofifo_tdata),      
+  .m_axis_tvalid(out_tvalid),   
+  .m_axis_tready(out_tready),   
+  .m_axis_tdata(out_tdata),
+  .axis_rd_data_count(out_rd_count)      
+);
+end
+
+if (IO_Fifo_Depth == 64 && (MIG_Data_Port_Size*PHY_to_UI_Rate) == 128) begin
+fifo_64x128 ififo (
+  .s_axis_aresetn(aresetn),  
+  .s_axis_aclk(aclk),        
+  .s_axis_tvalid(in_tvalid),   
+  .s_axis_tready(in_tready),   
+  .s_axis_tdata(in_tdata),      
+  .m_axis_tvalid(ififo_tvalid),   
+  .m_axis_tready(ififo_tready),   
+  .m_axis_tdata(ififo_tdata),
+  .axis_rd_data_count(in_wr_count)      
+);
+
+fifo_64x128 ofifo (
+  .s_axis_aresetn(aresetn),  
+  .s_axis_aclk(aclk),        
+  .s_axis_tvalid(ofifo_tvalid),   
+  .s_axis_tready(ofifo_tready),   
+  .s_axis_tdata(ofifo_tdata),      
+  .m_axis_tvalid(out_tvalid),   
+  .m_axis_tready(out_tready),   
+  .m_axis_tdata(out_tdata),
+  .axis_rd_data_count(out_rd_count)      
+);
+end
+
+if (IO_Fifo_Depth == 64 && (MIG_Data_Port_Size*PHY_to_UI_Rate) == 256) begin
+fifo_64x256 ififo (
+  .s_axis_aresetn(aresetn),  
+  .s_axis_aclk(aclk),        
+  .s_axis_tvalid(in_tvalid),   
+  .s_axis_tready(in_tready),   
+  .s_axis_tdata(in_tdata),      
+  .m_axis_tvalid(ififo_tvalid),   
+  .m_axis_tready(ififo_tready),   
+  .m_axis_tdata(ififo_tdata),
+  .axis_rd_data_count(in_wr_count)      
+);
+
+fifo_64x256 ofifo (
+  .s_axis_aresetn(aresetn),  
+  .s_axis_aclk(aclk),        
+  .s_axis_tvalid(ofifo_tvalid),   
+  .s_axis_tready(ofifo_tready),   
+  .s_axis_tdata(ofifo_tdata),      
+  .m_axis_tvalid(out_tvalid),   
+  .m_axis_tready(out_tready),   
+  .m_axis_tdata(out_tdata),
+  .axis_rd_data_count(out_rd_count)      
+);
+end
+
+if (IO_Fifo_Depth == 64 && (MIG_Data_Port_Size*PHY_to_UI_Rate) == 512) begin
+fifo_64x512 ififo (
+  .s_axis_aresetn(aresetn),  
+  .s_axis_aclk(aclk),        
+  .s_axis_tvalid(in_tvalid),   
+  .s_axis_tready(in_tready),   
+  .s_axis_tdata(in_tdata),      
+  .m_axis_tvalid(ififo_tvalid),   
+  .m_axis_tready(ififo_tready),   
+  .m_axis_tdata(ififo_tdata),
+  .axis_rd_data_count(in_wr_count)      
+);
+
+fifo_64x512 ofifo (
+  .s_axis_aresetn(aresetn),  
+  .s_axis_aclk(aclk),        
+  .s_axis_tvalid(ofifo_tvalid),   
+  .s_axis_tready(ofifo_tready),   
+  .s_axis_tdata(ofifo_tdata),      
+  .m_axis_tvalid(out_tvalid),   
+  .m_axis_tready(out_tready),   
+  .m_axis_tdata(out_tdata),
+  .axis_rd_data_count(out_rd_count)      
+);
+end
+
+// ------------------------------------------------------------------------------------
+if (IO_Fifo_Depth == 128 && (MIG_Data_Port_Size*PHY_to_UI_Rate) == 64) begin
+fifo_128x64 ififo (
+  .s_axis_aresetn(aresetn),  
+  .s_axis_aclk(aclk),        
+  .s_axis_tvalid(in_tvalid),   
+  .s_axis_tready(in_tready),   
+  .s_axis_tdata(in_tdata),      
+  .m_axis_tvalid(ififo_tvalid),   
+  .m_axis_tready(ififo_tready),   
+  .m_axis_tdata(ififo_tdata),
+  .axis_rd_data_count(in_wr_count)      
+);
+
+fifo_128x64 ofifo (
+  .s_axis_aresetn(aresetn),  
+  .s_axis_aclk(aclk),        
+  .s_axis_tvalid(ofifo_tvalid),   
+  .s_axis_tready(ofifo_tready),   
+  .s_axis_tdata(ofifo_tdata),      
+  .m_axis_tvalid(out_tvalid),   
+  .m_axis_tready(out_tready),   
+  .m_axis_tdata(out_tdata),
+  .axis_rd_data_count(out_rd_count)      
+);
+end
+
+if (IO_Fifo_Depth == 128 && (MIG_Data_Port_Size*PHY_to_UI_Rate) == 128) begin
+fifo_128x128 ififo (
+  .s_axis_aresetn(aresetn),  
+  .s_axis_aclk(aclk),        
+  .s_axis_tvalid(in_tvalid),   
+  .s_axis_tready(in_tready),   
+  .s_axis_tdata(in_tdata),      
+  .m_axis_tvalid(ififo_tvalid),   
+  .m_axis_tready(ififo_tready),   
+  .m_axis_tdata(ififo_tdata),
+  .axis_rd_data_count(in_wr_count)      
+);
+
+fifo_128x128 ofifo (
+  .s_axis_aresetn(aresetn),  
+  .s_axis_aclk(aclk),        
+  .s_axis_tvalid(ofifo_tvalid),   
+  .s_axis_tready(ofifo_tready),   
+  .s_axis_tdata(ofifo_tdata),      
+  .m_axis_tvalid(out_tvalid),   
+  .m_axis_tready(out_tready),   
+  .m_axis_tdata(out_tdata),
+  .axis_rd_data_count(out_rd_count)      
+);
+end
+
+if (IO_Fifo_Depth == 128 && (MIG_Data_Port_Size*PHY_to_UI_Rate) == 256) begin
+fifo_128x256 ififo (
+  .s_axis_aresetn(aresetn),  
+  .s_axis_aclk(aclk),        
+  .s_axis_tvalid(in_tvalid),   
+  .s_axis_tready(in_tready),   
+  .s_axis_tdata(in_tdata),      
+  .m_axis_tvalid(ififo_tvalid),   
+  .m_axis_tready(ififo_tready),   
+  .m_axis_tdata(ififo_tdata),
+  .axis_rd_data_count(in_wr_count)      
+);
+
+fifo_128x256 ofifo (
+  .s_axis_aresetn(aresetn),  
+  .s_axis_aclk(aclk),        
+  .s_axis_tvalid(ofifo_tvalid),   
+  .s_axis_tready(ofifo_tready),   
+  .s_axis_tdata(ofifo_tdata),      
+  .m_axis_tvalid(out_tvalid),   
+  .m_axis_tready(out_tready),   
+  .m_axis_tdata(out_tdata),
+  .axis_rd_data_count(out_rd_count)      
+);
+end
+
+if (IO_Fifo_Depth == 128 && (MIG_Data_Port_Size*PHY_to_UI_Rate) == 512) begin
+fifo_128x512 ififo (
+  .s_axis_aresetn(aresetn),  
+  .s_axis_aclk(aclk),        
+  .s_axis_tvalid(in_tvalid),   
+  .s_axis_tready(in_tready),   
+  .s_axis_tdata(in_tdata),      
+  .m_axis_tvalid(ififo_tvalid),   
+  .m_axis_tready(ififo_tready),   
+  .m_axis_tdata(ififo_tdata),
+  .axis_rd_data_count(in_wr_count)      
+);
+
+fifo_128x512 ofifo (
+  .s_axis_aresetn(aresetn),  
+  .s_axis_aclk(aclk),        
+  .s_axis_tvalid(ofifo_tvalid),   
+  .s_axis_tready(ofifo_tready),   
+  .s_axis_tdata(ofifo_tdata),      
+  .m_axis_tvalid(out_tvalid),   
+  .m_axis_tready(out_tready),   
+  .m_axis_tdata(out_tdata),
+  .axis_rd_data_count(out_rd_count)      
+);
+end
+endgenerate
 
 endmodule
