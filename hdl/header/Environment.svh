@@ -55,19 +55,24 @@ class Transaction
         return data;        
     endfunction
 
+    // выдача номера транзакции
+    function int unsigned get_count();
+        return count;        
+    endfunction
+
     // запись данных транзакции
     function void set_data(logic [TDATA_WIDTH-1:0] data);
         this.data = data;        
     endfunction
 
-    // увеличить счетчик транзакций
-    function void count_inc();
-        count++;    
+    // запись номера транзакций
+    function void set_count(int count);
+        this.count = count;    
     endfunction    
     
     // запись в лог 
     function void print(string tag="");
-        $display("%s: time = %t, transaction number = %d, value = %h", tag, $time, count, data);
+        $display("%s: time = %t, transaction number = %0d, value = %h", tag, $time, count, data);
     endfunction
 
 endclass
@@ -85,31 +90,28 @@ class Generator
     
     mailbox mb_driver;
     mailbox mb_scoreboard;
-
-    event dr_done;
     
     //конструктор класс
     function new(int gen_max_delay_ns);
         this.gen_max_delay_ns = gen_max_delay_ns;
-        trans = new;
     endfunction
 
     // передача случайных данных в mailbox
-    task send_data_to_mb();
+    task send_data_to_mb(int count);
+        trans = new;
         trans.randomize();
-        trans.count_inc();
+        trans.set_count(count);
         delay = $urandom_range(0, gen_max_delay_ns);
         # delay; // случайная задержка
         mb_driver.put(trans);
         mb_scoreboard.put(trans);
-        trans.print("Generator");
-        @(dr_done);       
+        trans.print("Generator");      
     endtask
 
     // создать заданное число транзакций
     task run(input int trans_numb);
-        repeat (trans_numb) 
-            send_data_to_mb();
+        for (int count = 1; count <= trans_numb; count++)
+            send_data_to_mb(count);    
         $display("Generator Done.");    
     endtask
 
@@ -125,7 +127,6 @@ class Driver
     mailbox mb_driver;
     Transaction #(TDATA_WIDTH) trans;
     virtual AXIS_intf #(TDATA_WIDTH) axis;
-    event dr_done;
     
     //конструктор класс
     function new();
@@ -135,22 +136,20 @@ class Driver
     // принимает данные из mailbox и передает их по axis  
     task run(int trans_numb);
         bit have_data = 0;
-        int count;
+        int count = 0;
         forever begin
             wait (axis.aresetn);
 
             @(posedge axis.aclk)
             if (!(axis.tvalid  && !axis.tready)) begin
                 if(mb_driver.try_get(trans)) begin
-                    trans.print("Driver");
                     axis.tvalid <= 1'b1;
                     axis.tdata <= trans.get_data();
-                    count = trans.count;
+                    trans.print("Driver");
                 end else
                     axis.tvalid <= 1'b0;
-
-                if(axis.tready && axis.tvalid) begin  
-                    -> dr_done;
+                if(axis.tready && axis.tvalid) begin
+                    count++;  // увеличение счетчика переданных данных
                     if (count == trans_numb) // завершение работы драйвера
                         break;   
                 end
@@ -179,11 +178,11 @@ class Monitor
     //конструктор класс
     function new(int mon_max_delay_ns);
         this.mon_max_delay_ns = mon_max_delay_ns;
-        trans = new;
     endfunction
 
     // принимает данные из mailbox и передает их по axis  
     task run(int trans_numb);
+        int count = 0;
         forever begin
             wait (axis.aresetn);
             @(posedge axis.aclk)
@@ -192,13 +191,15 @@ class Monitor
             // если данные валидны, скадем их в mailbox
             else if(axis.tvalid) begin
                 axis.tready <= 0;
+                count++;
+                trans = new;
                 trans.set_data(axis.tdata);
-                trans.count_inc();
+                trans.set_count(count);
                 trans.print("Monitor");
                 delay = $urandom_range(0, mon_max_delay_ns);
                 # delay; // случайная задержка
                 mb_monitor.put(trans);
-                if (trans.count == trans_numb) // завершение работы драйвера
+                if (count == trans_numb) // завершение работы драйвера
                     break;   
             end           
         end
@@ -235,23 +236,23 @@ class Scoreboard
         repeat(trans_numb) begin
             // получаем данные от монитора
             mb_monitor.get(monintor_trans);
-            monintor_trans.print("Score Monitore");
+            monintor_trans.print("Score Monitor");
             
             // получаем данные от драйвера
             mb_driver.get(driver_trans);
             driver_trans.print("Score Driver");
 
-            if (monintor_trans.count != driver_trans.count) begin // проверка порядка транзакций
+            if (monintor_trans.get_count() != driver_trans.get_count()) begin // проверка порядка транзакций
                 f_logs = $fopen({file_path, "../../log_fifo_mig_based_tests/Test_Logs_x4.txt"}, "a");
-                $display("Wrong transctions order! Tx number: %0d. Rx number: %0d.", driver_trans.count, monintor_trans.count);
-                $fdisplay(f_logs, "Wrong transctions order! Rx number: %0d. Tx number: %0d.", driver_trans.count, monintor_trans.count);
+                $display("Wrong transctions order! Tx number: %0d. Rx number: %0d.", driver_trans.get_count(), monintor_trans.get_count());
+                $fdisplay(f_logs, "Wrong transctions order! Rx number: %0d. Tx number: %0d.", driver_trans.get_count(), monintor_trans.get_count());
                 $fclose(f_logs);
                 test_pass = 0;
             end
             else if (monintor_trans.data != driver_trans.data) begin // проверка данных транзакций
                 f_logs = $fopen({file_path, "../../log_fifo_mig_based_tests/Test_Logs_x4.txt"}, "a");
-                $display("Wrong transction data! Number %3d. Tx value: %h. Rx value: %h.", driver_trans.count, driver_trans.data, monintor_trans.data);
-                $fdisplay(f_logs, "Wrong transction data! Number %3d. Tx value: %h. Rx value: %h.", driver_trans.count, driver_trans.data, monintor_trans.data);
+                $display("Wrong transction data! Number %3d. Tx value: %h. Rx value: %h.", driver_trans.get_count(), driver_trans.get_data(), monintor_trans.get_data());
+                $fdisplay(f_logs, "Wrong transction data! Number %3d. Tx value: %h. Rx value: %h.", driver_trans.get_count(), driver_trans.get_data(), monintor_trans.get_data());
                 $fclose(f_logs);
                 test_pass = 0;
             end
@@ -260,8 +261,6 @@ class Scoreboard
     endtask
 
 endclass
-
-
 
 // ---------------------------------------------------
 // ------------  Тестовое окружение  -----------------
@@ -281,8 +280,6 @@ class Environment
     mailbox mb_driver;
     mailbox mb_scoreboard;
     mailbox mb_monitor;
-
-    event dr_done;
 
     virtual AXIS_intf #(TDATA_WIDTH) axis_in;
     virtual AXIS_intf #(TDATA_WIDTH) axis_out;
@@ -306,11 +303,9 @@ class Environment
 
         dr.axis = axis_in;
         dr.mb_driver = mb_driver;
-        dr.dr_done = dr_done;
 
         gen.mb_driver = mb_driver;
         gen.mb_scoreboard = mb_scoreboard;
-        gen.dr_done = dr_done;
 
         mon.axis = axis_out;
         mon.mb_monitor = mb_monitor;
@@ -323,7 +318,7 @@ class Environment
             dr.run(transaction_numb);
             mon.run(transaction_numb);
         join
-
+        
         score.run(transaction_numb); 
         
         test_pass = score.test_pass;
