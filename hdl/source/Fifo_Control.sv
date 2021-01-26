@@ -113,7 +113,7 @@ generate
         always_ff @(posedge aclk)
             if (!aresetn)
                 WR_X2_Flag <= 0;
-            else if (app_wdf_rdy && (State == WRITE))
+            else if (app_wdf_rdy && app_wdf_wren && (State == WRITE))
                 WR_X2_Flag <= ~WR_X2_Flag;
 
         assign app_wdf_data = (WR_X2_Flag) ? in_tdata[MIG_Data_Port_Size-1:0] : in_tdata[2*MIG_Data_Port_Size-1:MIG_Data_Port_Size];

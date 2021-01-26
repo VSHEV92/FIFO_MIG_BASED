@@ -11,7 +11,8 @@
 !docs/*
 
 !ips
-!ips/*.xcix
+!ips/fifo_*
+!ips/fifo_*/*.xci
 
 !hdl
 !hdl/header

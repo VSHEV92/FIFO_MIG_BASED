@@ -243,14 +243,14 @@ class Scoreboard
             driver_trans.print("Score Driver");
 
             if (monintor_trans.get_count() != driver_trans.get_count()) begin // проверка порядка транзакций
-                f_logs = $fopen({file_path, "../../log_fifo_mig_based_tests/Test_Logs_x4.txt"}, "a");
+                f_logs = $fopen({file_path, "../../log_fifo_mig_based_tests/Test_Logs.txt"}, "a");
                 $display("Wrong transctions order! Tx number: %0d. Rx number: %0d.", driver_trans.get_count(), monintor_trans.get_count());
                 $fdisplay(f_logs, "Wrong transctions order! Rx number: %0d. Tx number: %0d.", driver_trans.get_count(), monintor_trans.get_count());
                 $fclose(f_logs);
                 test_pass = 0;
             end
             else if (monintor_trans.data != driver_trans.data) begin // проверка данных транзакций
-                f_logs = $fopen({file_path, "../../log_fifo_mig_based_tests/Test_Logs_x4.txt"}, "a");
+                f_logs = $fopen({file_path, "../../log_fifo_mig_based_tests/Test_Logs.txt"}, "a");
                 $display("Wrong transction data! Number %3d. Tx value: %h. Rx value: %h.", driver_trans.get_count(), driver_trans.get_data(), monintor_trans.get_data());
                 $fdisplay(f_logs, "Wrong transction data! Number %3d. Tx value: %h. Rx value: %h.", driver_trans.get_count(), driver_trans.get_data(), monintor_trans.get_data());
                 $fclose(f_logs);

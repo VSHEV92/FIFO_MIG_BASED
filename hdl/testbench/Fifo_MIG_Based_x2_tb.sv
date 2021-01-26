@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 
 `include "../header/Environment.svh"
-`include "../header/testbench_settings_x4.svh"
+`include "../header/testbench_settings_x2.svh"
 `include "../header/test_set.svh"
 
 module Fifo_MIG_Based_tb();
@@ -17,13 +17,14 @@ tri     [15:0] dq;
 logic reset, aresetn, aclk, init_calib;
 bit sys_rst = 1;
 bit sys_clk_i = 0;
+bit clk_ref_i = 0;
 
 logic [27:0] app_addr;
 logic [2:0] app_cmd;
 logic app_en, app_rdy;
 
 logic [MIG_Data_Port_Size-1:0] app_wdf_data, app_rd_data;
-logic [15:0] app_wdf_mask;
+logic [7:0] app_wdf_mask;
 logic app_wdf_wren, app_wdf_end, app_wdf_rdy;
 logic app_rd_data_valid, app_rd_data_end;
 
@@ -36,6 +37,10 @@ Environment #(TDATA_WIDTH) env;
 // тактовый сигнал
  initial forever
     #(1000.0 / 2 / CLK_FREQ) sys_clk_i = ~sys_clk_i; 
+
+initial forever
+    #(1000.0 / 2 / 200) clk_ref_i = ~clk_ref_i; 
+
 
 // сигнал сброса
 initial 
@@ -61,7 +66,7 @@ end
 final begin
     automatic int f_result; 
     automatic string file_path = find_file_path(`__FILE__);
-    f_result = $fopen({file_path, "../../log_fifo_mig_based_tests/Test_Results_x4.txt"}, "a");
+    f_result = $fopen({file_path, "../../log_fifo_mig_based_tests/Test_Results_x2.txt"}, "a");
 
     $display("-------------------------------------");
     if (env.test_pass) begin
@@ -156,7 +161,8 @@ mig_7series_0 MIG_inst (
     .ui_clk                 (aclk),  
     .ui_clk_sync_rst        (reset),  
     .app_wdf_mask           (app_wdf_mask),  
-    .sys_clk_i              (sys_clk_i), 
+    .sys_clk_i              (sys_clk_i),
+    .clk_ref_i              (clk_ref_i),  
     .sys_rst                (sys_rst) 
     );
 assign aresetn = ~reset;

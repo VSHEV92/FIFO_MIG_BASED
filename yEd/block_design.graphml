@@ -792,8 +792,8 @@ WR_COUNTER &gt; 0<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelM
                   <y:Geometry height="30.0" width="30.0" x="1193.1185000000003" y="746.1644505638042"/>
                   <y:Fill hasColor="false" transparent="false"/>
                   <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
-                  <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="243.73046875" x="-100.41366406249949" xml:space="preserve" y="-7.40234375">Reset Val: 0
-Enable: APP_WDF_RDY &amp; STATE = WRITE<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="-0.2783884925739679" nodeRatioX="0.21505234375001692" nodeRatioY="-0.5" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+                  <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="359.74609375" x="-158.4214765624995" xml:space="preserve" y="-7.40234375">Reset Val: 0
+Enable: APP_WDF_WREN &amp; APP_WDF_RDY &amp; STATE = WRITE<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="-0.2783884925739679" nodeRatioX="0.21505234375001692" nodeRatioY="-0.5" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
                   <y:Shape type="rectangle3d"/>
                 </y:ShapeNode>
               </data>
