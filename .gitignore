@@ -10,6 +10,9 @@
 !docs
 !docs/*
 
+!microblaze_code
+!microblaze_code/*
+
 !ips
 !ips/fifo_*
 !ips/fifo_*/*.xci
