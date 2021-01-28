@@ -51,7 +51,7 @@ IP-ядро, реализующее Fifo на основе DDR памяти и M
 
 #### Упаковка ядра из исходников
 
-Необходимо запустить Vivado Tcl Shell, перейти директорию, где расположен README файл и скрипт с помощью представленного ниже выражения:
+Необходимо запустить Vivado Tcl Shell, перейти директорию, где расположен README файл, и запустить скрипт с помощью представленного ниже выражения:
 
 ```
 vivado -mode batch –source tcl/package_IP.tcl -notrace
@@ -63,17 +63,16 @@ vivado -mode batch –source tcl/package_IP.tcl -notrace
 
 #### Создание демонстрационных проектов
 
-Необходимо запустить Vivado Tcl Shell, перейти директорию, где расположен README файл, и запустить тесты с помощью представленных ниже выражений:
+Необходимо запустить Vivado Tcl Shell, перейти директорию, где расположен README файл, и запустить скрипт с помощью представленного ниже выражения:
 
-- 
-
-  ```
-  
-  ```
+```
+vivado -mode batch –source tcl/example_project.tcl -notrace
+```
 
 После выполнения скрипта, наобходимо в Vivado Tcl Shell ввести 
 
 ```
-
+open_project fifo_mig_based_example/fifo_mig_based_example.xpr
+start_gui
 ```
 

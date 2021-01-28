@@ -10,8 +10,8 @@
 !docs
 !docs/*
 
-!microblaze_code
-!microblaze_code/*
+!microblaze_data
+!microblaze_data/*
 
 !ips
 !ips/fifo_*
