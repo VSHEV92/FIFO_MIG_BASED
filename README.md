@@ -69,7 +69,7 @@ vivado -mode batch –source tcl/package_IP.tcl -notrace
 vivado -mode batch –source tcl/example_project.tcl -notrace
 ```
 
-После выполнения скрипта, наобходимо в Vivado Tcl Shell ввести 
+После выполнения скрипта, необходимо в Vivado Tcl Shell ввести 
 
 ```
 open_project fifo_mig_based_example/fifo_mig_based_example.xpr
